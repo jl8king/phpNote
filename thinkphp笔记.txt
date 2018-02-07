@@ -1,0 +1,4 @@
+²é
+Db::query('select * from mission_category where id=1');
+ÔöÉ¾¸Ä
+Db::execute("update think_user set name='thinkphp' where status=1");

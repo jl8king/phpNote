@@ -1,0 +1,18 @@
+一、使用mysqli对象
+1.连接数据库
+$connection = new mysqli("127.0.0.1","root","root");
+$connection->set_charset("utf-8");//设置连接的字符编码
+$connection->select_db("test");//设置要访问的数据库
+
+2.创建数据表
+$sql = "create table student (".
+    "id int primary key not null AUTO_INCREMENT,".
+    "grade int(5) not null,".
+    "s_name char(5) not null".
+    ") ENGINE = INNODB DEFAULT CHARSET = utf8 collate = utf8_icelandic_ci;";
+$result = $connection->query($sql);
+
+3.查询
+$result = $connection->query($query_sql);
+$result_one = $result->fetch_assoc();//返回一条数据(之后指针指向下一条记录)
+$result_set = $result->fetch_all();//返回所有数据

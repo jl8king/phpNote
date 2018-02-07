@@ -1,0 +1,207 @@
+范围解析操作符(::)
+
+《引入代码》
+trait：技术
+格式：trait acCode{}
+引入:class Add{
+    use acCode,...
+}
+1.出现方法和属性相同(方法名一致参数个数一致)的时候：
+	调用的优先级：本类-->trait->父类
+2.当多个trait出现相同的方法和属性时：
+    eg：
+        trait acCode{
+            public function funAdd($num1,$num2){
+                return "acCode".($num1+$num2);
+            }
+        }
+        trait acCode2{
+            public function funAdd($num1,$num2){
+                return "acCode2:".($num1+$num2);
+            }
+        }
+    2.规定使用某一个trait;
+	eg:
+	use acCode,acCode2{
+	    acCode2::funAdd insteadof acCode;//解决冲突报错
+	    acCode2::funAdd as funAdd2;//设置别名
+	}
+
+    	$myClassFour = new MyClassFour();
+	println($myClassFour->funAdd(1,2));
+	println($myClassFour->funAdd2(1,2));
+
+《调用对象》
+使用->调用方法和属性
+
+PHP中的类是单继承的。
+
+class MyClassOne{
+    public $id;
+    public $age;
+    private $name;
+    const CARD_ID=4154565454787;
+    public function eat($food){
+        println($food);
+        return $this;
+    }
+}
+$zhangsan = new MyClassOne();
+//注意使用foreach只能得到类中public的全局变量;常量和方法无法获取
+foreach ($zhangsan as $key=>$value){
+    println($key);
+    println($value);
+}
+
+S、在内部调用属性和方法
+S1、调用非静态的属性和方法(常量除外)
+    1.当前类中（使用$this关键字）
+	格式：$this->属性或者方法名()
+	eg：$this->name;$this->eat();
+	function method(){
+	    println($this->spring);
+	}
+    2.父类中(调用方法)
+	格式：使用parent::关键字
+	eg：parent::eat();
+	
+S2、调用静态的方法和属性及其常量
+    1.当前类中
+	格式：使用self关键字
+	eg：self::_ID,self::$sex,self::eat();
+	private static $classTwo = null;
+	self::$classTwo = new MyClassTwo();
+	function eat(){
+	    self::$obj = new MyClassTwo();
+	}
+    2.父类中
+	格式：使用parent::关键字
+	eg：parent::_ID; parent::$name; parent::eat();
+	
+S3、定义指定传参的类型
+    格式：在方法的形参名的前边加上类型用空格分开
+    注意：类型不可以使用原生数据类型（int,string,boolean...）！！！
+    eg1:
+	public function funAdd(Persion $per,tiger $tig){
+		
+	}
+    eg2:
+	interface Dog{ };
+	class Tyq extends Dog{ }
+	public function funAdd(Dog $per){ }
+	
+	$tyq = new Tyq();
+	funAdd($tyq);
+S4、指定形参必须接收的是一个方法
+    格式：使用callable关键字
+    eg：function add(callable $hello){ }
+    
+    
+    
+
+
+一、调用类中的常量、静态方法和属性使用::
+class MyClassTwo
+{
+    const _ASD = "sdf";
+}
+$obj = new MyClassTwo();
+println( $obj::_ASD);
+
+
+二、检查一个对象实例是不是特定的类型
+    关键字：instanceof
+    例子: $zhangsan instanceof MyClassOne
+    返回一个boolean类型的值
+
+三、克隆对象
+    $zhangsan = new MyClassOne();
+    $cope_obj = clone $zhangsan;
+
+四、对象序列化和反序列化
+    $zhangsan = new MyClassOne();
+    1.序列化
+	$xlh = serialize($zhangsan);
+	file_put_contents($xlh);//保存到本地
+    2.反序列化
+	unserialize($xlh);
+
+
+五、抽象类和接口
+    1、抽象类
+	特征：不能被实例化，可以有抽象方法
+	通过子类继承来实现
+    2、接口
+	特征：不能被实例化和继承，所有的方法只能是抽象的方法；
+	通过implements去实现制定的接口
+	要实现多个接口通过,隔开
+	eg：class Test implements MyTest,MyTest1{}
+
+六、常用的魔术方法
+    规范：以__开头
+    1.__set($name,$value);//设置不可访问的属性的值
+	特性：在设置不可访问的属性的值时自动调用该方法
+	public function __set($name, $value)
+	{
+	    $this->$name = $value;
+	}
+    2.__get($name);//获取不可访问的属性的值
+	特性：在获取不可访问的属性的值时自动调用该方法
+	public function __get($name)
+	{
+	    println("get");
+	    return $this->$name;
+	}
+    3.__call($name,$arguments);//调用不可访问的方法
+	特性：在调用不可访问的方法时自动调用该方法
+	public function __call($funName, $arguments)
+	{
+	    
+	}
+
+《自动加载》
+引入php类文件
+注意：在类生成实例的时候调用写入的方法或调用类的静态方法
+	例子：$student = new Student();
+	      Student::fun();
+1、function __autoload($className){
+	
+}
+2、spl_autoload_register('方法名');//推荐
+
+3、清除指定加载的类文件
+    spl_autoload_unregister('方法名');
+eg1：
+function fileClass($name){
+    $pathClass = "lib/{$name}.php";
+    var_dump($pathClass);
+    if(file_exists($pathClass)){
+        require_once $pathClass;
+    }
+}
+spl_autoload_register('fileClass');
+$student = new Student();
+
+eg2：
+function __autoload($name){
+    $pathClass = "lib/{$name}.php";
+    var_dump($pathClass);
+    if(file_exists($pathClass)){
+        require_once $pathClass;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

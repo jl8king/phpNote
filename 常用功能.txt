@@ -1,0 +1,27 @@
+《下载文件》
+function download(){
+    //不使用finfo扩展包下载压缩包
+    $filePath = "b.rar";//当前文件目录下的压缩包
+
+    header("Content-Type: application/force-download,application/zip");
+    header("Content-Transfer-Encoding: binary");
+    header('Content-Disposition: attachment; filename='.basename($filePath));
+    header('Content-Length: '.filesize($filePath));
+    readfile($filePath);
+}
+function download2(){
+    //define("WWWROOT",str_ireplace(str_replace("/","\\",$_SERVER['PHP_SELF']),'',__FILE__));
+    define('WWW_PATH',str_replace('\\','/',realpath(dirname(__FILE__).'/../')));
+    $filePath = WWW_PATH."/file/b.rar";
+    $fileInfo=finfo_open(FILEINFO_MIME_TYPE);
+    $mimeType=finfo_file($fileInfo,$filePath);
+    finfo_close($fileInfo);
+    println($mimeType);
+    header("Content-type:".$mimeType);
+    header('Content-Disposition: attachment; filename='.basename($filePath));
+    header('Content-Length: '.filesize($filePath));
+    readfile($filePath);
+}
+
+
+

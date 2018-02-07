@@ -1,0 +1,149 @@
+《类的默认结构》
+1.无参的构造方法(对象被创建时自动调用)
+public function __construct(){}
+2.析构函数(对象被销毁时自动调用)
+public function __destruct(){}
+
+
+《常用的方法和属性》
+1.销毁对象和变量
+unset($test);
+2.检查类是否已被定义(返回boolean)
+class_exists("class");
+3.显示目录下面的文件和目录(返回数组)
+scandir("/images/file")
+4.将字符串转换成数组(返回数组)
+explode(".","asd.453.s456asd");
+5.判断文件或目录是否存在(返回boolean)
+file_exists("prject");
+6.判断文件存在且为正常的文件(返回boolean)
+is_file("config.txt");
+7.首字母大写
+ucfirst("dsa45");
+
+
+
+《变量和常量》
+1.声明变量
+	$memory = "value";
+2.声明常量
+	define("MEMORY","value");
+3.引用赋值:关键字&
+	格式：&$name;
+	$a = 10;
+	$b = $a;
+	$c = &$a;
+	$a = 115;
+	结果：$a为115,$b为10,$c为115,
+		
+《字符串》
+单引号和双引号
+
+$str = "sad";
+var_dump($str);
+var_dump("{$str}成功");
+
+《数组》
+count函数：计算数组的长度
+$arr = [1,2,3];
+$arr2 = [
+    'id' => 50,
+    'cat' => "20",
+];
+foreach ($arr2 as $item){
+    var_dump($item);
+}
+array_count_values:统计数组里边的值出现的次数
+
+《元符号》
+$pattern='/s.{2}a/';
+$str='sdsadsqwas';
+preg_match_all($pattern,$str,$arrNew);
+
+
+《会话控制》
+一、session
+	步骤：
+	1.session_start();开启和返回存在的会话
+	2.存储会话
+		$_SESSION["username"]="张三";
+	3.获取session
+		$_SESSION["username"];//获取指定的session
+		$_SESSION;//获取所有的session(返回一个数组)
+	4.销毁session
+		$_SESSION["username"]=null;
+《路径》
+一.物理路径
+1.当前文件所在的路径
+var_dump(dirname(__FILE__));//当前文件所在的位置(例子:E:\phpdemo\demoOne\dgjj)
+var_dump(__FILE__);//当前文件所在的位置(例子:E:\phpdemo\demoOne\dgjj\index.php)
+
+2.当前网站的根路径
+define("WWWROOT",str_ireplace(str_replace("/","\\",$_SERVER['PHP_SELF']),'',__FILE__));//获取当前文件的目录
+define('WWW_PATH',str_replace('\\','/',realpath(dirname(__FILE__).'/../')));
+
+var_dump(WWWROOT);//(E:\phpdemo\demoOne\index.php);
+var_dump(WWW_PATH);//(E:/phpdemo/demoOne);
+
+
+《异常》
+1.在方法中使用
+throw new Exception("代码有问题");
+
+《命名空间》
+在php的文件使用关键字namespace
+eg:
+<?php
+    namespace Myname;
+    class MyClass{}
+访问：
+    $myclass = new Myname\MyClass();
+一、常量
+    定义：
+	1.define('Myname\_CARDID','123654787');
+	2.define(__NAMESPACE__.'\_CARDID','123654787');
+    使用：Myname\_CARDID
+
+《导入和引入》
+use MyName\Namepa as NP;//导入类设置别名
+include 'Namepa.php';//引入文件()
+require 'Namepa.php';//引入文件
+
+《include、require区别》
+include 和 require 除了处理错误的方式不同之外，在其他方面都是相同的。
+require：生成一个致命错误（E_COMPILE_ERROR），在错误发生后脚本会停止执行。
+include：生成一个警告（E_WARNING），在错误发生后脚本会继续执行。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
